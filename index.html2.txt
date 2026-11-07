@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Billu 🎂</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #090018, #350052, #130027);
+    color: white;
+}
+
+#confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.card {
+    width: 100%;
+    max-width: 430px;
+    padding: 35px 23px;
+    text-align: center;
+    border-radius: 25px;
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(255,255,255,.2);
+    box-shadow: 0 0 40px rgba(255,0,200,.2);
+    backdrop-filter: blur(15px);
+    z-index: 2;
+    animation: appear 1s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: scale(.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.cake {
+    font-size: 80px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    50% { transform: translateY(-12px); }
+}
+
+h1 {
+    font-size: clamp(30px, 8vw, 42px);
+    margin: 15px 0;
+    background: linear-gradient(90deg,#ff70cf,#fff,#ffd166);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.name {
+    font-size: 38px;
+    font-weight: bold;
+    color: #ffd166;
+    text-shadow: 0 0 20px #ffae00;
+    margin: 12px 0;
+}
+
+.message {
+    color: #f4e8ff;
+    line-height: 1.8;
+    font-size: 15px;
+    margin: 20px 0;
+}
+
+button {
+    background: linear-gradient(90deg,#ff36a7,#a020f0);
+    border: none;
+    padding: 15px 28px;
+    border-radius: 50px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff36a7;
+    transition: .3s;
+}
+
+button:hover {
+    transform: scale(1.08);
+}
+
+#surprise {
+    display: none;
+    margin-top: 20px;
+    color: #ffd166;
+    font-size: 17px;
+    line-height: 1.7;
+    animation: appear 1s ease;
+}
+
+.footer {
+    margin-top: 25px;
+    color: #d6b8ec;
+    font-size: 12px;
+}
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    animation: float 6s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes float {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@media(max-width:480px) {
+    .card {
+        padding: 30px 18px;
+    }
+
+    .cake {
+        font-size: 65px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="card">
+
+    <div class="cake">🎂</div>
+
+    <h1>HAPPY BIRTHDAY</h1>
+
+    <div class="name">BILLU ❤️</div>
+
+    <div class="message">
+        Hey Billu! 🥳<br><br>
+
+        Today is your special day! 🎉
+
+        May your life be filled with happiness,
+        success, laughter and endless beautiful memories.
+
+        May all your dreams come true
+        and may you always keep smiling! ❤️
+
+        <br><br>
+        Stay blessed and keep shining! ✨
+    </div>
+
+    <button onclick="surprise()">
+        🎁 Open Your Surprise
+    </button>
+
+    <div id="surprise">
+        🎉 HAPPY BIRTHDAY BILLU! 🎉
+        <br><br>
+        You're an amazing friend!
+        Never change, keep smiling
+        and enjoy your special day! ❤️
+        <br><br>
+        Lots of wishes for you! 🥳
+    </div>
+
+    <div class="footer">
+        Made with ❤️ by Your Friend
+    </div>
+
+</div>
+
+<script>
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+let pieces = [];
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize", resize);
+
+function celebrate() {
+    const colors = [
+        "#ff4da6", "#ffd166",
+        "#ffffff", "#a855f7",
+        "#00e5ff", "#7cff6b"
+    ];
+
+    for(let i = 0; i < 180; i++) {
+        pieces.push({
+            x: Math.random() * canvas.width,
+            y: -Math.random() * canvas.height,
+            size: Math.random() * 8 + 3,
+            speed: Math.random() * 4 + 2,
+            drift: Math.random() * 3 - 1.5,
+            color: colors[Math.floor(Math.random()*colors.length)],
+            rotation: Math.random() * 360
+        });
+    }
+}
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    pieces.forEach((p,i) => {
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.rotation * Math.PI/180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+        ctx.restore();
+
+        p.y += p.speed;
+        p.x += p.drift;
+        p.rotation += 4;
+
+        if(p.y > canvas.height + 20) {
+            pieces.splice(i,1);
+        }
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+function surprise() {
+    document.getElementById("surprise").style.display = "block";
+    celebrate();
+}
+
+// Floating hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (Math.random()*15+15)+"px";
+    heart.style.animationDuration = (Math.random()*3+4)+"s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(),7000);
+}
+
+setInterval(createHeart,600);
+
+// Automatic birthday celebration
+window.onload = celebrate;
+</script>
+
+</body>
+</html>
